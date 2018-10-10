@@ -5,8 +5,15 @@ const express = require('express')
 const sqlite3 = require('sqlite3')
 const db = new sqlite3.Database('DB/websiteDB.db')
 
-const bodyParser = require('body-parser')
+db.run('CREATE TABLE IF NOT EXISTS blog(id integer primary key autoincrement, author text, title text, content text)', function(error) {
+    if(error) {
+        console.log("suck ass")
+    }else{
+        console.log("succesfully created")
+    }
+})
 
+const bodyParser = require('body-parser')
 
 const expressHandlebars =
  require('express-handlebars')
@@ -20,14 +27,6 @@ app.engine('hbs', expressHandlebars({
 }))
 
 app.use(express.static('images'))
-
-db.run("CREATE TABLE IF NOT EXISTS Blogposts VALUES ( Id INTEGER PRIMARY KEY AUTOINCREMENT , Author TEXT, Content TEXT, Title TEXT)", function(error) {
-    if(error) {
-        console.log("Couldnt create table, it already exists")
-    }else{
-        console.log("succesfully created")
-    }
-})
 
 app.get('/home', function(request, response){
  const model = {
@@ -58,8 +57,6 @@ app.get('/login', function(request, response){
 app.get('/blogpost', function(request, response){
     const model = {}
 
-    db.get()
-
     response.render("blogpost.hbs", model)
 })
 
@@ -76,8 +73,8 @@ app.post('/submitBlogpost', function(request,response){
     const Author = "Oskar"
     const Title = request.body.title
     const Content = request.body.blogpost
-    const query = "INSERT INTO Blogposts (Title, Content, Author) VALUES (?,?,?)"
-    db.run(query,[Title, Content, Author] , function(error){
+    const query = "INSERT INTO blog(author, title, content) VALUES (?,?,?)"
+    db.run(query,[Author, Title, Content] , function(error){
         if(error){
         console.log("couldnt post")
         }else{
