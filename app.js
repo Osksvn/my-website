@@ -7,9 +7,17 @@ const db = new sqlite3.Database('DB/websiteDB.db')
 
 db.run('CREATE TABLE IF NOT EXISTS blog(id integer primary key autoincrement, author text, title text, content text)', function(error) {
     if(error) {
-        console.log("suck ass")
+        console.log("error")
     }else{
-        console.log("succesfully created")
+        console.log("succesfully created blog table")
+    }
+})
+
+db.run('CREATE TABLE IF NOT EXISTS admin(id integer primary key autoincrement, email text unique, password text unique)', function(error) {
+    if(error) {
+        console.log("error")
+    }else{
+        console.log("succesfully created user table")
     }
 })
 
@@ -69,7 +77,6 @@ app.get('/newblogpost', function(request, response){
 
 app.post('/submitBlogpost', function(request,response){
 
-
     const Author = "Oskar"
     const Title = request.body.title
     const Content = request.body.blogpost
@@ -83,6 +90,19 @@ app.post('/submitBlogpost', function(request,response){
     })
 })
 
+app.post('/login', function(request, response){
+    const username = request.body.em
+    const password = request.body.pw
 
+    const query = "insert into user(email, password) values (?,?)"
+    db.run(query, [username, password], function(error){
+        if(error){
+        console.log("couldnt get password")
+        }else{
+        console.log("succesfully added user")
+        }
+
+    })
+})
 
 app.listen(8080)
