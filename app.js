@@ -81,6 +81,20 @@ app.get('/newblogpost', function(request, response){
     response.render("newblogpost.hbs", model)
 })
 
+app.get('/portfolio', function(request, response){
+
+    const model = {}
+
+    response.render("portfolio.hbs", model)
+
+})
+
+app.get('/admin', function(request, response){
+    const model = {}
+
+    response.render("admin.hbs", model)
+})
+
 app.post('/submitBlogpost', function(request,response){
 
     const Author = "Oskar"
