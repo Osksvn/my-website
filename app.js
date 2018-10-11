@@ -2,24 +2,10 @@
 
 const dummyData = require('./dummy-data')
 const express = require('express')
-const sqlite3 = require('sqlite3')
-const db = new sqlite3.Database('DB/websiteDB.db')
+const db = require('./database')
 
-db.run('CREATE TABLE IF NOT EXISTS blog(id integer primary key autoincrement, author text, title text, content text)', function(error) {
-    if(error) {
-        console.log("error")
-    }else{
-        console.log("succesfully created blog table")
-    }
-})
 
-db.run('CREATE TABLE IF NOT EXISTS admin(id integer primary key autoincrement, email text unique, password text unique)', function(error) {
-    if(error) {
-        console.log("error")
-    }else{
-        console.log("succesfully created user table")
-    }
-})
+
 
 const bodyParser = require('body-parser')
 
@@ -82,17 +68,52 @@ app.get('/newblogpost', function(request, response){
 })
 
 app.get('/portfolio', function(request, response){
+    const query = 'SELECT * FROM portfolio'
 
-    const model = {}
+    db.all(query, function(error, portfolio){
+        if(error){
+            console.log("couldnt fetch portfolios")
+        }else{
+    const model = {
+        pfolio : portfolio
+    }
 
     response.render("portfolio.hbs", model)
-
+}
+    })
 })
 
 app.get('/admin', function(request, response){
     const model = {}
 
     response.render("admin.hbs", model)
+})
+
+app.get('/guestBookEntryMade', function(request, response){
+    const model = {}
+
+    response.render("guestBookEntryMade.hbs", model)
+})
+
+app.get('/guestbook', function(request, response){
+    const query = 'SELECT * FROM guestbook'
+
+    db.all(query, function(error, guestbook){
+        if(error){
+            console.log("couldnt fetch guestbook entries")
+        }else{
+            const model = {
+                gbook : guestbook
+            }
+            response.render("guestbook.hbs", model)
+        }
+    }) 
+})
+
+app.get('/newPortfolioEntry', function(request, response){
+    const model = {}
+
+    response.render("newPortfolioEntry.hbs", model)
 })
 
 app.post('/submitBlogpost', function(request,response){
@@ -105,24 +126,54 @@ app.post('/submitBlogpost', function(request,response){
         if(error){
         console.log("couldnt post")
         }else{
-            console.log("succesfully inserted into table")
+            console.log("succesfully inserted into blog")
+            response.render("admin.hbs", {})
+        }
+    })
+})
+
+app.post('/portfolioEntry', function(request, response){
+
+    const Title = request.body.ptitle
+    const Content = request.body.pentry
+    const Image = request.body.pimage
+    const query = "INSERT INTO portfolio(title, content, image) VALUES (?,?,?)"
+    db.run(query, [Title, Content, Image], function(error){
+        if(error){
+            console.log("coulndt post into portfolio database")
+        }else{
+            console.log("succesfully inserted into portfolio")
+            response.render("admin.hbs", {})
+        }
+    })
+})
+
+app.post('/guestbookEntry', function(request, response){
+
+    const Author = request.body.author
+    const Message = request.body.message
+    const query ="INSERT INTO guestbook(author, message) VALUES (?,?)"
+    db.run(query, [Author, Message], function(error){
+        if(error){
+            console.log("couldnt post into guestbook table")
+        }else{
+            console.log("succesfully inserted into guestbook")
+            response.render("guestBookEntryMade.hbs", {})
         }
     })
 })
 
 app.post('/login', function(request, response){
-    const username = request.body.em
+    const email = request.body.em
     const password = request.body.pw
 
-    const query = "insert into user(email, password) values (?,?)"
-    db.run(query, [username, password], function(error){
-        if(error){
-        console.log("couldnt get password")
-        }else{
-        console.log("succesfully added user")
-        }
-
-    })
+    if(email == "osksvn@outlook.com" && password == "Password1"){
+        request.session.loggedin = true
+        response.render("/home")
+    }else{
+        response.render("login.hbs")
+    }
 })
+
 
 app.listen(8080)

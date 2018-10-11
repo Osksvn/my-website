@@ -34,7 +34,7 @@
       <div class="column">
         <div class="notification is-primary">
           <p class="is-size-5">
-            Guestbook
+            <a href="/guestbook">Guestbook</a>
           </p>
         </div>
       </div>
@@ -44,10 +44,12 @@
   </div>
 
 
-          
+           <section class="section">
+              <div class="container">          
 {{#if blogpost}}
 {{#each blogpost}}
-              <div class="column">
+ 
+              <div class="column has-backround-black">
                   <p class="is-size-2" name="title">{{title}}</p>
                   <p class="is-size-5" name="content" > {{content}}
                   </p>
