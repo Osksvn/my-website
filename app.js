@@ -49,9 +49,8 @@ app.get('/login', function(request, response){
 })
 
 app.get('/blogpost', function(request, response){
-    const query = 'SELECT * FROM blog'
 
-    db.all(query, function(error, blog){
+    db.getAllBlogPosts(function(error, blog) {
 
             const model = {
                 blogpost : blog
@@ -68,18 +67,12 @@ app.get('/newblogpost', function(request, response){
 })
 
 app.get('/portfolio', function(request, response){
-    const query = 'SELECT * FROM portfolio'
 
-    db.all(query, function(error, portfolio){
-        if(error){
-            console.log("couldnt fetch portfolios")
-        }else{
+    db.getAllPortfolioEntries(function(error, portfolio){
     const model = {
         pfolio : portfolio
     }
-
     response.render("portfolio.hbs", model)
-}
     })
 })
 
@@ -96,19 +89,14 @@ app.get('/guestBookEntryMade', function(request, response){
 })
 
 app.get('/guestbook', function(request, response){
-    const query = 'SELECT * FROM guestbook'
 
-    db.all(query, function(error, guestbook){
-        if(error){
-            console.log("couldnt fetch guestbook entries")
-        }else{
+    db.getAllGuestbookEntries(function(error, guestbook) {
             const model = {
                 gbook : guestbook
             }
             response.render("guestbook.hbs", model)
-        }
+        })
     }) 
-})
 
 app.get('/newPortfolioEntry', function(request, response){
     const model = {}
@@ -121,15 +109,12 @@ app.post('/submitBlogpost', function(request,response){
     const Author = "Oskar"
     const Title = request.body.title
     const Content = request.body.blogpost
-    const query = "INSERT INTO blog(author, title, content) VALUES (?,?,?)"
-    db.run(query,[Author, Title, Content] , function(error){
-        if(error){
-        console.log("couldnt post")
-        }else{
-            console.log("succesfully inserted into blog")
-            response.render("admin.hbs", {})
-        }
-    })
+
+    db.newBlogpost(Author, Title, Content, function() {
+            
+        })    
+    response.render("admin.hbs", {})
+    
 })
 
 app.post('/portfolioEntry', function(request, response){
@@ -137,31 +122,21 @@ app.post('/portfolioEntry', function(request, response){
     const Title = request.body.ptitle
     const Content = request.body.pentry
     const Image = request.body.pimage
-    const query = "INSERT INTO portfolio(title, content, image) VALUES (?,?,?)"
-    db.run(query, [Title, Content, Image], function(error){
-        if(error){
-            console.log("coulndt post into portfolio database")
-        }else{
-            console.log("succesfully inserted into portfolio")
-            response.render("admin.hbs", {})
-        }
+
+    db.newPortfolioEntry(Title, Content, Image, function() {
+
     })
+            response.render("admin.hbs", {})
 })
 
 app.post('/guestbookEntry', function(request, response){
 
     const Author = request.body.author
     const Message = request.body.message
-    const query ="INSERT INTO guestbook(author, message) VALUES (?,?)"
-    db.run(query, [Author, Message], function(error){
-        if(error){
-            console.log("couldnt post into guestbook table")
-        }else{
-            console.log("succesfully inserted into guestbook")
+
+    db.newGuestbookEntry(Author, Message, function() {})
             response.render("guestBookEntryMade.hbs", {})
-        }
     })
-})
 
 app.post('/login', function(request, response){
     const email = request.body.em

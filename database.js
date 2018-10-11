@@ -34,5 +34,57 @@ db.run('CREATE TABLE IF NOT EXISTS guestbook(id integer primary key autoincremen
 })
 
 exports.getAllBlogPosts = function(callback) {
-    const query = 
+    const query = 'SELECT * FROM blog'
+    db.all(query, function(error, blog){
+        callback(error, blog)
+    })
+}
+
+exports.newBlogpost = function(Author, Title, Content) {
+
+    const query = "INSERT INTO blog(author, title, content) VALUES (?,?,?)"
+    db.run(query,[Author, Title, Content] , function(error){
+        if(error){
+        console.log("couldnt post")
+        }else{
+            console.log("succesfully inserted into blog")
+        }
+    })
+}
+
+exports.newPortfolioEntry = function(Title, Content, Image) {
+
+    const query = "INSERT INTO portfolio(title, content, image) VALUES (?,?,?)"
+    db.run(query, [Title, Content, Image], function(error){
+        if(error){
+            console.log("coulndt post into portfolio database")
+        }else{
+            console.log("succesfully inserted into portfolio")
+        }
+    })
+}
+
+exports.getAllPortfolioEntries = function(callback) {
+    const query = 'SELECT * FROM portfolio'
+    db.all(query, function(error, portfolio){
+        callback(error, portfolio)
+    })
+}
+
+exports.getAllGuestbookEntries = function(callback) {
+    const query = 'SELECT * FROM guestbook'
+    db.all(query, function(error, guestbook) {
+        callback(error, guestbook)
+    })
+}
+
+exports.newGuestbookEntry = function(Author, Message) {
+    const query ="INSERT INTO guestbook(author, message) VALUES (?,?)"
+    db.run(query, [Author, Message], function(error) {
+        if(error){
+            console.log("couldnt post into guestbook table")
+        }else{
+            console.log("succesfully inserted into guestbook")
+    }
 })
+}
