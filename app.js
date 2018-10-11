@@ -105,4 +105,17 @@ app.post('/login', function(request, response){
     })
 })
 
+app.get('/blogpost', function(request, response){
+
+    const query = 'SELECT * FROM blog'
+
+    db.all(query, function(error, blog){
+
+            const model = {
+                blogpost : blog
+            }
+            response.render("blogpost.hbs", model)
+        })
+    })
+
 app.listen(8080)
