@@ -1,12 +1,10 @@
-
-
 <div class="container">
                 
     <div class="columns">
       <div class="column">
         <div class="notification is-primary">
           <p class="is-size-5">
-               <a href="/contact">Contact</a>
+            <a href="/contact">Contact</a>
           </p>
         </div>
       </div>
@@ -18,9 +16,9 @@
         </div>
       </div>
       <div class="column">
-        <div class="notification is-info">
+        <div class="notification is-primary">
           <p class="is-size-5">
-            Blogposts
+            <a href="/blogpost">Blogposts</a>
           </p>
         </div>
       </div>
@@ -43,11 +41,19 @@
     </div>
   </div>
 
-
-           <section class="section">
-              <div class="container">          
-{{#if blogpost}}
-{{#each blogpost}}
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <form method="/delbp" action="POST">
+                <div class="column">
+                    <p>Choose id of which blogpost to delete</p>
+                    <textarea class="input" name="delbp" id="delbp"></textarea> 
+                    <a class="button notification is-danger">Delete</a>
+                </div>
+            </form>
+            <div class="column is-two-thirds">
+            {{#if blogpost}}
+            {{#each blogpost}}
  
               <div class="column has-backround-black">
                   <p class="is-size-2" name="title">#{{id}}:  {{title}}</p>
@@ -55,11 +61,10 @@
                   </p>
               </div>
 
-      
-        {{/each}}
-        {{else}}
-        <p>No blog entries</p>
-        {{/if}}
-</div>
-        </section>
-  
+            {{/each}}
+            {{else}}
+                <p>No blog entries</p> </div>
+            {{/if}}
+        </div>
+    </div>
+</section>

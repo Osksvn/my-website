@@ -88,3 +88,20 @@ exports.newGuestbookEntry = function(Author, Message) {
     }
 })
 }
+
+exports.checkUser = function(em, pw) {
+    const email = "SELECT email FROM admin WHERE id = 1"
+    const password = "SELECT password FROM admin WHERE id =1"
+
+}
+
+exports.deleteBlogpost =function(id) {
+    const query = "DELETE FROM blog WHERE id = ?"
+    db.run(query, [id], function(error) {
+        if(error){
+            console.log("couldnt delete from blogposts")
+        }else{
+            console.log("succesfully deleted from blogposts")
+        }
+    })
+}

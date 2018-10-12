@@ -98,6 +98,26 @@ app.get('/guestbook', function(request, response){
         })
     }) 
 
+app.get('/deleteBlogpost', function(error, response) {
+    db.getAllBlogPosts(function(error, blog) {
+
+        const model = {
+            blogpost : blog
+        }
+        response.render("deleteBlogpost.hbs", model)
+    })
+})
+
+app.post('/delbp', function(request, response) {
+    
+        const id = request.body.delbp
+        
+        db.deleteBlogpost(id, function() {
+        
+    })
+    response.render("blogpost.hbs", {})
+})
+
 app.get('/newPortfolioEntry', function(request, response){
     const model = {}
 
