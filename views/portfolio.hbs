@@ -25,7 +25,7 @@
       <div class="column">
         <div class="notification is-info">
           <p class="is-size-5">
-            Portfolio
+            Gallery
           </p>
         </div>
       </div>
@@ -54,11 +54,8 @@
                         </div>
                         <div class="card-content">
                             <div class="media">
-                                <div class="media-content">
-                                    <p class="title is-4 no-padding" name="title">{{title}}</p>
-                                </div>
+                            <div class="media-content" name="content"> <p class="title is-4 no-padding"> {{content}} </p> {{#if ../loggedin}} <form method="POST" action="/delp/{{id}}"> <button class="notification is-danger">Delete</button> </form> {{/if}}
                             </div>
-                            <div class="content" name="content"> {{content}} {{#if ../loggedin}} <form method="POST" action="/delp/{{id}}"> <button class="notification is-danger">Delete</button> </form> {{/if}}
                                 <div class="background-icon"><span class="icon-twitter"></span></div> 
                             </div> 
                         </div>
@@ -66,7 +63,7 @@
                 </div> 
                 {{/each}}
                 {{else}}
-                <p>portfolios couldnt be loaded</p>
+                <p>gallery couldnt be loaded</p>
                 {{/if}}   
             </div>
     </div>

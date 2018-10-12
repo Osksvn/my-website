@@ -28,6 +28,14 @@ app.engine('hbs', expressHandlebars({
 
 app.use(express.static('images'))
 
+app.get('/', function(request, response) {
+    const isLoggedIn = request.session.loggedin
+
+    const model = {
+        loggedin : isLoggedIn
+    }
+})
+
 app.get('/home', function(request, response){
     const isLoggedIn = request.session.loggedin
 
