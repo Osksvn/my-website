@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Oskar Svensson</title>
+		<title> Oskar Svensson</title>
 		<link rel="stylesheet" 
         href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -71,14 +71,24 @@
     </div>
 -->
     <div class="navbar-end">
-      <a class="navbar-item is-size-3" href="/admin">
+     {{#if loggedin}} <a class="navbar-item is-size-3" href="/admin">
+        <i class="fas fa-user"></i>
+          </a>
+          <p>Inlogged as: Oskar</p>
+          {{else}}
+        <a class="navbar-item is-size-3" href="">
         <i class="fas fa-user-lock"></i>
           </a>
+          {{/if}}
         </div>
       </div>
         <div class="navbar-item is-pulled-right"></div>
           <div class="buttons is-pulled-right">
-          <a class="button is-info is-size-5 is-pulled-right" href="/login"> Log in
+        {{#if loggedin}}
+        <form action="/logout" method="POST"> <button class="button is-info is-size-5 is-pulled-right"> Log out </button>
+          </form>
+        {{else}}
+         <a class="button is-info is-size-5 is-pulled-right" href="/login"> Log in {{/if}}
       </a>
       </div>
     </div>

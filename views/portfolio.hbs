@@ -58,7 +58,7 @@
                                     <p class="title is-4 no-padding" name="title">{{title}}</p>
                                 </div>
                             </div>
-                            <div class="content" name="content"> {{content}}
+                            <div class="content" name="content"> {{content}} {{#if ../loggedin}} <form method="POST" action="/delp/{{id}}"> <button class="notification is-danger">Delete</button> </form> {{/if}}
                                 <div class="background-icon"><span class="icon-twitter"></span></div> 
                             </div> 
                         </div>

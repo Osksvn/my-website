@@ -1,12 +1,10 @@
-
-
 <div class="container">
                 
     <div class="columns">
       <div class="column">
         <div class="notification is-primary">
           <p class="is-size-5">
-               <a href="/contact">Contact</a>
+            <a href="/contact">Contact</a>
           </p>
         </div>
       </div>
@@ -18,9 +16,9 @@
         </div>
       </div>
       <div class="column">
-        <div class="notification is-info">
+        <div class="notification is-primary">
           <p class="is-size-5">
-            Blogposts
+            <a href="/blogpost">Blogposts</a>
           </p>
         </div>
       </div>
@@ -43,22 +41,4 @@
     </div>
   </div>
 
-
-           <section class="section">
-              <div class="container">       
-               
-{{#if blogpost}}
-  
-{{#each blogpost}}
-              <div class="column notification is-info">  
-                  <p class="is-size-2 notification is-dark" name="title">{{title}}  </p>
-                  <p class="is-size-5 notification is-warning" name="content" > {{content}} {{#if ../loggedin}} <form method="POST" action="/delbp/{{id}}"> <button class="notification is-danger"> Delete </button> </form> {{/if}}
-                  </p>
-              </div>
-        {{/each}}
-        {{else}}
-        <p>No blog entries</p>
-        {{/if}}
-</div>
-        </section>
   

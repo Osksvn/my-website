@@ -95,13 +95,26 @@ exports.checkUser = function(em, pw) {
 
 }
 
-exports.deleteBlogpost =function(id) {
+exports.deleteBlogpost = function(id) {
     const query = "DELETE FROM blog WHERE id = ?"
     db.run(query, [id], function(error) {
         if(error){
             console.log("couldnt delete from blogposts")
         }else{
             console.log("succesfully deleted from blogposts")
+            const numberOfDeletedRows = this.changes
+            
+        }
+    })
+}
+
+exports.deletePortfolioEntry = function(id) {
+    const query = "DELETE FROM portfolio WHERE id = ?"
+    db.run(query, [id], function(error) {
+        if(error){
+            console.log("couldnt delete from portfolio")
+        }else{
+            console.log("succesfully deleted from portfolio")
         }
     })
 }
