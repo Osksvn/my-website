@@ -26,7 +26,7 @@
       <div class="column">
         <div class="notification is-primary">
           <p class="is-size-5">
-            <a href="/portfolio">Gallery</a>
+            <a href="/gallery">Gallery</a>
           </p>
         </div>
       </div>
@@ -62,9 +62,11 @@
                 <p class="is-size-3 notification is-danger">Guestbook entries are displayed here</p>
                  {{#if gbook}}
                 {{#each gbook}}
-                <div class="column notification is-info">
+                <div class="column notification is-info" > 
                 <p class="is-size-3" name="author"> {{author}} </p>
                 <p class="is-size-5" name="msg"> {{message}}</p>
+                {{#if ../loggedin}} <form action="/delg/{{id}}" method="POST"> <button class="button is-danger">Delete</button> </form>
+                {{/if}}
                 </div>
             {{/each}}
             {{else}}

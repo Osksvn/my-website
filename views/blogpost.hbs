@@ -27,7 +27,7 @@
       <div class="column">
         <div class="notification is-primary">
           <p class="is-size-5">
-            <a href="/portfolio">Gallery</a>
+            <a href="/gallery">Gallery</a>
           </p>
         </div>
       </div>
@@ -48,11 +48,11 @@
               <div class="container">       
                
 {{#if blogpost}}
-  
 {{#each blogpost}}
               <div class="column notification is-info">  
                   <p class="is-size-2 notification is-dark" name="title">{{title}}  </p>
-                  <p class="is-size-5 notification is-warning" name="content" > {{content}} {{#if ../loggedin}} <form method="POST" action="/delbp/{{id}}"> <button class="notification is-danger"> Delete </button> </form> {{/if}}
+                  <p class="is-size-5 notification is-primary" name="content" > {{content}} {{#if ../loggedin}} <form method="POST" action="/delbp/{{id}}"> <button class="button is-danger">Delete</button> </form>
+                  <form action="/editBp/{{id}}" method="GET"> <button class="button is-light">Edit </button> </form> {{/if}}
                   </p>
               </div>
         {{/each}}

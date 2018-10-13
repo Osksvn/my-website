@@ -13,7 +13,7 @@ db.run('CREATE TABLE IF NOT EXISTS admin(id integer primary key autoincrement, e
     if(error) {
         console.log("error")
     }else{
-        console.log("succesfully created user table")
+        console.log("succesfully created admin table")
     }
 })
 
@@ -30,6 +30,14 @@ db.run('CREATE TABLE IF NOT EXISTS guestbook(id integer primary key autoincremen
         console.logt("error")
     }else{
         console.log("succesfully created guestbook table")
+    }
+})
+
+db.run('CREATE TABLE IF NOT EXISTS gallery(id integer primary key autoincrement, image text)', function(error){
+    if(error) {
+        console.logt("error")
+    }else{
+        console.log("succesfully created gallery table")
     }
 })
 
@@ -52,10 +60,10 @@ exports.newBlogpost = function(Author, Title, Content) {
     })
 }
 
-exports.newPortfolioEntry = function(Title, Content, Image) {
+exports.newGalleryEntry = function(FileName) {
 
-    const query = "INSERT INTO portfolio(title, content, image) VALUES (?,?,?)"
-    db.run(query, [Title, Content, Image], function(error){
+    const query = "INSERT INTO gallery(image) VALUES (?)"
+    db.run(query, [FileName], function(error){
         if(error){
             console.log("coulndt post into portfolio database")
         }else{
@@ -64,10 +72,10 @@ exports.newPortfolioEntry = function(Title, Content, Image) {
     })
 }
 
-exports.getAllPortfolioEntries = function(callback) {
-    const query = 'SELECT * FROM portfolio'
-    db.all(query, function(error, portfolio){
-        callback(error, portfolio)
+exports.getAllGalleryEntries = function(callback) {
+    const query = 'SELECT * FROM gallery'
+    db.all(query, function(error, gallery){
+        callback(error, gallery)
     })
 }
 
@@ -108,13 +116,59 @@ exports.deleteBlogpost = function(id) {
     })
 }
 
-exports.deletePortfolioEntry = function(id) {
-    const query = "DELETE FROM portfolio WHERE id = ?"
+exports.deleteGalleryEntry = function(id) {
+    const query = "DELETE FROM gallery WHERE id = ?"
     db.run(query, [id], function(error) {
         if(error){
-            console.log("couldnt delete from portfolio")
+            console.log("couldnt delete from gallery")
         }else{
-            console.log("succesfully deleted from portfolio")
+            console.log("succesfully deleted from gallery")
+        }
+    })
+}
+
+exports.deleteGuestbookEntry = function(id) {
+    const query = "DELETE FROM guestbook WHERE id = ?"
+    db.run(query, [id], function(error){
+        if(error){
+            console.log("couldnt delete from guestbook")
+        }else{
+            console.log("succesfully deleted from guestbook")
+        }
+    })
+}
+
+exports.getBlogFromBlog = function(id, callback) {
+    const query = 'SELECT * FROM blog WHERE id = ?'
+    db.get(query, [id], function(error, blog) {
+        if(error){
+            console.log("couldnt fetch specific blogpost")
+        }else{
+            console.log("succesfully fetched specific blogpost")
+            callback(error, blog)
+        }
+    })
+}
+
+exports.updateBlog = function(id, title, content) {
+    const query = 'UPDATE blog SET title = ?, content = ? WHERE id = ?'
+    db.run(query, [title, content, id], function(error){
+        if(error){
+            console.log("couldnt update blogpost")
+        }else{
+            console.log("succesfully updated blog")
+        }
+    }) 
+}
+
+exports.authorize = function(em, pw) {
+    const query = 'SELECT * FROM admin WHERE email = ?, password = ?'
+    db.get(query, [em, pw], function(error){
+        if(error){
+            console.log("wrong username or password")
+        }else{
+            console.log("login was successfull")
+            return true
         }
     })
 }
