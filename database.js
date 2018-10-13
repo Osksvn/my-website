@@ -161,14 +161,10 @@ exports.updateBlog = function(id, title, content) {
     }) 
 }
 
-exports.authorize = function(em, pw) {
-    const query = 'SELECT * FROM admin WHERE email = ?, password = ?'
-    db.get(query, [em, pw], function(error){
-        if(error){
-            console.log("wrong username or password")
-        }else{
-            console.log("login was successfull")
-            return true
-        }
+exports.authorize = function(em, pw, callback) {
+    const query = 'SELECT * FROM admin WHERE email = ? AND password = ?'
+    db.get(query, [em, pw], function(error, admin) {
+        callback(error, admin)
     })
+        
 }
