@@ -5,8 +5,13 @@ const expressSession = require('express-session')
 const fileupload = require('express-fileupload')
 const connectSqlite3 = require('connect-sqlite3')
 const SQLiteStore = connectSqlite3(expressSession)
- // const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
+var bcrypt = require('bcryptjs');
 
+
+var salt = bcrypt.genSaltSync(10);
+var hash = bcrypt.hashSync(salt);
+console.log(hash)
 
 
 const bodyParser = require('body-parser')
@@ -16,22 +21,24 @@ const expressHandlebars =
 
 const app = express()
 
+app.use(cookieParser('victoria'))
+
 app.use(fileupload());
 
 app.use(expressSession({
-    store: new SQLiteStore({db: "/DB/websiteDB", table: "sessions"}),             
+    store: new SQLiteStore({db: "DB/websiteDB.db", table: "sessions"}),             
     secret: 'victoria',
     resave: false,
     saveUninitialized: true
 }))
 
-/* app.get("/create-cookie", function(request, response){
-    response.cookie("lastVisit", Date.now())
+app.get("/create-cookie", function(request, response){
+    response.cookie("lastVisit", Date.now()) })
 
-    app.use(cookieParser())
+    
 app.get("/log-cookie", function(request, response){
 const lastVisit = parseInt(request.cookies.lastVisit)
-    */
+})
 
 app.use(bodyParser.urlencoded({extended: false}))
 
@@ -111,8 +118,11 @@ app.get('/newblogpost', function(request, response){
     const model = {
         loggedin : isLoggedIn
     }
-
-    response.render("newblogpost.hbs", model)
+    if(isLoggedIn) {
+        response.render("newblogpost.hbs",model)
+    }else{
+        response.render("login.hbs", {})
+    }
 })
 
 app.get('/gallery', function(request, response){
@@ -133,13 +143,13 @@ app.get('/admin', function(request, response){
         loggedin : isLoggedIn
     }
 
-  /*  if(request.session.loggedin) {
+    if(isLoggedIn) {
         response.render("admin.hbs",model)
     }else{
         response.render("login.hbs", {})
     }
-*/
-    response.render("admin.hbs", model)
+
+   // response.render("admin.hbs", model)
 })
 
 app.get('/guestBookEntryMade', function(request, response){
@@ -229,8 +239,11 @@ app.get('/newGalleryEntry', function(request, response){
     const model = {
             loggedin : isLoggedIn
     }
-
-    response.render("newGalleryEntry.hbs", model)
+    if(isLoggedIn) {
+        response.render("newGalleryEntry.hbs",model)
+    }else{
+        response.render("login.hbs", {})
+    }
 })
 
 app.post('/submitBlogpost', function(request,response){
@@ -279,15 +292,12 @@ app.post('/login', function(request, response){
     const email = request.body.em
     const password = request.body.pw
 
-  //   db.authorize(email, password, function(error, admin){
-        
-            if (email == 'Attamannen' && password == 'password') {
+    if (email == 'Attamannen' && bcrypt.compareSync(password, '$2a$10$knENzIxH4cioBhLyHKiLjuycbNkkHNZxyHCuulnlMRt5Xif6lB83m')) {
         request.session.loggedin = true
         response.redirect('/admin')
             }else{
         response.render("login.hbs")
             }
-      //  })
 })
 
 app.post('/logout', function(request, response) {
