@@ -32,7 +32,7 @@
       <div class="column">
         <div class="notification is-primary">
           <p class="is-size-5">
-           <a href="/guestbook"></a> Guestbook
+           <a href="/guestbook">Guestbook</a> 
           </p>
         </div>
       </div>
@@ -41,28 +41,24 @@
     </div>
   </div>
 
-
-
 <form method="POST" action="/login">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
             <div class="container has-text-centered">
                 <div class="column is-4 is-offset-4">
                     <h3 class="title has-text-grey">Login</h3>
                     <p class="subtitle has-text-grey">Please login to proceed.</p>
                     <div class="box">
-                        <form>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-large" type="text" placeholder="Your Email" autofocus="" name="em">
+                                    <input class="input is-large" type="text" placeholder="Your username" autofocus="" name="em">
                                 </div>
                             </div>
-
                             <div class="field">
                                 <div class="control">
                                     <input class="input is-large" type="password" placeholder="Your Password" name="pw">
                                 </div>
                             </div>
                             <button class="button is-block is-info is-large is-fullwidth" value="login">Login</button>
-                        </form>
                     </div>
                 </div>
             </div> 

@@ -7,7 +7,9 @@ const connectSqlite3 = require('connect-sqlite3')
 const SQLiteStore = connectSqlite3(expressSession)
 const cookieParser = require('cookie-parser')
 var bcrypt = require('bcryptjs');
+var csrf = require('csurf')
 
+var csrfProtection = csrf({ cookie: true })
 
 var salt = bcrypt.genSaltSync(10);
 var hash = bcrypt.hashSync(salt);
@@ -16,10 +18,13 @@ console.log(hash)
 
 const bodyParser = require('body-parser')
 
+
 const expressHandlebars =
  require('express-handlebars')
 
 const app = express()
+
+app.use(bodyParser.urlencoded({extended : false}))
 
 app.use(cookieParser('victoria'))
 
@@ -88,10 +93,12 @@ app.get('/about', function(request, response){
     response.render("about.hbs", model)
 })
 
-app.get('/login', function(request, response){
-    const model = {}
+app.get('/loginPage', csrfProtection, function(request, response){
+    const model = {
+        csrfToken : request.csrfToken()
+    }
 
-    response.render("login.hbs", model)
+    response.render("loginPage.hbs", model)
 })
 
 app.get('/blogpost', function(request, response){
@@ -121,7 +128,7 @@ app.get('/newblogpost', function(request, response){
     if(isLoggedIn) {
         response.render("newblogpost.hbs",model)
     }else{
-        response.render("login.hbs", {})
+        response.render("loginPage.hbs", {})
     }
 })
 
@@ -146,46 +153,24 @@ app.get('/admin', function(request, response){
     if(isLoggedIn) {
         response.render("admin.hbs",model)
     }else{
-        response.render("login.hbs", {})
+        response.render("loginPage.hbs", {})
     }
-
-   // response.render("admin.hbs", model)
 })
 
-app.get('/guestBookEntryMade', function(request, response){
-    const isLoggedIn = request.session.loggedin
-
-    const model = {
-        loggedin : isLoggedIn
-    }
-
-    response.render("guestBookEntryMade.hbs", model)
-})
-
-app.get('/guestbook', function(request, response){
+app.get('/guestbook', csrfProtection, function(request, response){
 
     const isLoggedIn = request.session.loggedin
 
     db.getAllGuestbookEntries(function(error, guestbook) {
             const model = {
                 loggedin : isLoggedIn ,
-                gbook : guestbook
+                gbook : guestbook,
+                csrfToken : request.csrfToken()
             }
             response.render("guestbook.hbs", model)
         })
     }) 
 
-app.get('/deleteBlogpost', function(error, response) {
-    const isLoggedIn = request.session.loggedin
-    db.getAllBlogPosts(function(error, blog) {
-
-        const model = {
-            blogpost : blog,
-            loggedin : isLoggedIn
-        }
-        response.render("deleteBlogpost.hbs", model)
-    })
-})
 
 app.post('/updateblog/:id', function(request, response) {
 
@@ -242,7 +227,7 @@ app.get('/newGalleryEntry', function(request, response){
     if(isLoggedIn) {
         response.render("newGalleryEntry.hbs",model)
     }else{
-        response.render("login.hbs", {})
+        response.render("loginPage.hbs", {})
     }
 })
 
@@ -279,16 +264,16 @@ app.post('/galleryEntry', function(request, response){
 })
 })
 
-app.post('/guestbookEntry', function(request, response){
+app.post('/guestbookEntry', csrfProtection , function(request, response){
 
     const Author = request.body.author
     const Message = request.body.message
 
     db.newGuestbookEntry(Author, Message, function() {})
-            response.render("guestBookEntryMade.hbs", {})
+            response.redirect('/guestbook')
     })
 
-app.post('/login', function(request, response){
+app.post('/login', csrfProtection , function(request, response){
     const email = request.body.em
     const password = request.body.pw
 
@@ -296,7 +281,7 @@ app.post('/login', function(request, response){
         request.session.loggedin = true
         response.redirect('/admin')
             }else{
-        response.render("login.hbs")
+        response.render("loginPage.hbs")
             }
 })
 
