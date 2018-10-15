@@ -97,7 +97,6 @@ exports.newGuestbookEntry = function(Author, Message) {
 })
 }
 
-
 exports.deleteBlogpost = function(id) {
     const query = "DELETE FROM blog WHERE id = ?"
     db.run(query, [id], function(error) {
