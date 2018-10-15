@@ -5,7 +5,7 @@ const expressSession = require('express-session')
 const fileupload = require('express-fileupload')
 const connectSqlite3 = require('connect-sqlite3')
 const SQLiteStore = connectSqlite3(expressSession)
- // const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
 
 
 
@@ -25,14 +25,17 @@ app.use(expressSession({
     saveUninitialized: true
 }))
 
-/* app.get("/create-cookie", function(request, response){
+/*app.get("/create-cookie", function(request, response){
     response.cookie("lastVisit", Date.now())
-
+    // ...
+    })
+    
     app.use(cookieParser())
-app.get("/log-cookie", function(request, response){
-const lastVisit = parseInt(request.cookies.lastVisit)
-    */
-
+    app.get("/log-cookie", function(request, response){
+    const lastVisit = parseInt(request.cookies.lastVisit)
+    // ...
+    })
+*/
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.engine('hbs', expressHandlebars({
@@ -100,8 +103,6 @@ app.get('/blogpost', function(request, response){
             response.render("blogpost.hbs", model)
         })
 })
-
-// app.get('/editBlogpost', function(request, response) {
 
 
 app.get('/newblogpost', function(request, response){
@@ -272,18 +273,18 @@ app.post('/guestbookEntry', function(request, response){
     const Message = request.body.message
 
     db.newGuestbookEntry(Author, Message, function() {})
-            response.render("guestBookEntryMade.hbs", {})
+            response.redirect('guestbook')
     })
 
 app.post('/login', function(request, response){
     const email = request.body.em
     const password = request.body.pw
 
-    if(db.authorize(email, password, function(){})){
+    if( db.authorize(email, password, function() {}) ) {   
         request.session.loggedin = true
         response.redirect('/admin')
     }else{
-        response.render("login.hbs")
+       response.render("login.hbs") 
     }
 })
 
