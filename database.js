@@ -97,11 +97,6 @@ exports.newGuestbookEntry = function(Author, Message) {
 })
 }
 
-exports.checkUser = function(em, pw) {
-    const email = "SELECT email FROM admin WHERE id = 1"
-    const password = "SELECT password FROM admin WHERE id =1"
-
-}
 
 exports.deleteBlogpost = function(id) {
     const query = "DELETE FROM blog WHERE id = ?"
@@ -138,17 +133,6 @@ exports.deleteGuestbookEntry = function(id) {
     })
 }
 
-exports.getBlogFromBlog = function(id, callback) {
-    const query = 'SELECT * FROM blog WHERE id = ?'
-    db.get(query, [id], function(error, blog) {
-        if(error){
-            console.log("couldnt fetch specific blogpost")
-        }else{
-            console.log("succesfully fetched specific blogpost")
-            callback(error, blog)
-        }
-    })
-}
 
 exports.updateBlog = function(id, title, content) {
     const query = 'UPDATE blog SET title = ?, content = ? WHERE id = ?'
@@ -159,12 +143,4 @@ exports.updateBlog = function(id, title, content) {
             console.log("succesfully updated blog")
         }
     }) 
-}
-
-exports.authorize = function(callback) {
-    const query = 'SELECT password FROM admin WHERE email = ?'
-    db.get(query, [em, pw], function(error, admin) {
-        callback(error, admin)
-    })
-        
 }
