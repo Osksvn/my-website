@@ -95,6 +95,7 @@ app.get('/about', function(request, response){
 
 app.get('/loginPage', csrfProtection, function(request, response){
     const model = {
+        
         csrfToken : request.csrfToken()
     }
 
@@ -276,12 +277,13 @@ app.post('/guestbookEntry', csrfProtection , function(request, response){
 app.post('/login', csrfProtection , function(request, response){
     const email = request.body.em
     const password = request.body.pw
+    const wrong = false
 
     if (email == 'Attamannen' && bcrypt.compareSync(password, '$2a$10$knENzIxH4cioBhLyHKiLjuycbNkkHNZxyHCuulnlMRt5Xif6lB83m')) {
         request.session.loggedin = true
         response.redirect('/admin')
             }else{
-        response.render("loginPage.hbs")
+        response.render("cantLogin.hbs")
             }
 })
 
