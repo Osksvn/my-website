@@ -46,7 +46,8 @@
   <div class="container">
       <div class="columns">
 
-                            <form method="POST" action="/guestbookEntry">
+                            <form method="POST" action="/guestbookEntry" >
+                            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             <div class="column notification is-warning">
                 <p class="is-size-5">Write something in the guestbook!</p>
                 <p>Your name</p>

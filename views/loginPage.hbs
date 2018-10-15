@@ -1,0 +1,82 @@
+<div class="container">
+                
+    <div class="columns">
+      <div class="column">
+        <div class="notification is-primary">
+          <p class="is-size-5">
+           <a href="/contact">Contact</a>
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="notification is-primary">
+          <p class="is-size-5">
+           <a href="/about">About</a>
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="notification is-primary">
+          <p class="is-size-5">
+            <a href="/blogpost">Blogposts</a>
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="notification is-primary">
+          <p class="is-size-5">
+            <a href="/gallery">Gallery</a>
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="notification is-primary">
+          <p class="is-size-5">
+<<<<<<< HEAD:views/login.hbs
+            <a href="/guestbook">Guestbook</a>
+=======
+           <a href="/guestbook">Guestbook</a> 
+>>>>>>> da2dd1983cb0f15405d59f58a3bdfd8b26f692ff:views/loginPage.hbs
+          </p>
+        </div>
+      </div>
+    </div>
+  </div> 
+    </div>
+  </div>
+
+<<<<<<< HEAD:views/login.hbs
+
+
+<form method="GET" action="/login">
+=======
+<form method="POST" action="/login">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+>>>>>>> da2dd1983cb0f15405d59f58a3bdfd8b26f692ff:views/loginPage.hbs
+            <div class="container has-text-centered">
+              {{#if wrong}} <p>Wrong username or password</p> {{/if}}
+                <div class="column is-4 is-offset-4">
+                    <h3 class="title has-text-grey">Login</h3>
+                    <p class="subtitle has-text-grey">Please login to proceed.</p>
+                    <div class="box">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-large" type="text" placeholder="Your username" autofocus="" name="em">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-large" type="password" placeholder="Your Password" name="pw">
+                                </div>
+                            </div>
+<<<<<<< HEAD:views/login.hbs
+                            <button class="button is-block is-info is-large is-fullwidth">Login</button>
+                        </form>
+=======
+                            <button class="button is-block is-info is-large is-fullwidth" value="login">Login</button>
+>>>>>>> da2dd1983cb0f15405d59f58a3bdfd8b26f692ff:views/loginPage.hbs
+                    </div>
+                    </p>
+                </div>
+            </div> 
+</form>
