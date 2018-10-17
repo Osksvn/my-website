@@ -48,15 +48,11 @@ exports.getAllBlogPosts = function(callback) {
     })
 }
 
-exports.newBlogpost = function(Author, Title, Content) {
+exports.newBlogpost = function(Author, Title, Content, callback) {
 
     const query = "INSERT INTO blog(author, title, content) VALUES (?,?,?)"
     db.run(query,[Author, Title, Content] , function(error){
-        if(error){
-        console.log("couldnt post")
-        }else{
-            console.log("succesfully inserted into blog")
-        }
+        callback(error)
     })
 }
 
@@ -86,60 +82,52 @@ exports.getAllGuestbookEntries = function(callback) {
     })
 }
 
-exports.newGuestbookEntry = function(Author, Message) {
+exports.newGuestbookEntry = function(Author, Message, callback) {
     const query ="INSERT INTO guestbook(author, message) VALUES (?,?)"
     db.run(query, [Author, Message], function(error) {
-        if(error){
-            console.log("couldnt post into guestbook table")
-        }else{
-            console.log("succesfully inserted into guestbook")
-    }
+            callback(error)
 })
 }
 
-exports.deleteBlogpost = function(id) {
+exports.deleteBlogpost = function(id, callback) {
     const query = "DELETE FROM blog WHERE id = ?"
     db.run(query, [id], function(error) {
-        if(error){
-            console.log("couldnt delete from blogposts")
-        }else{
-            console.log("succesfully deleted from blogposts")
+        callback(error)
             const numberOfDeletedRows = this.changes
-            
-        }
     })
 }
 
-exports.deleteGalleryEntry = function(id) {
+exports.deleteGalleryEntry = function(id, callback) {
     const query = "DELETE FROM gallery WHERE id = ?"
     db.run(query, [id], function(error) {
-        if(error){
-            console.log("couldnt delete from gallery")
-        }else{
-            console.log("succesfully deleted from gallery")
-        }
+        callback(error)
     })
 }
 
-exports.deleteGuestbookEntry = function(id) {
+exports.deleteGuestbookEntry = function(id, callback) {
     const query = "DELETE FROM guestbook WHERE id = ?"
     db.run(query, [id], function(error){
-        if(error){
-            console.log("couldnt delete from guestbook")
-        }else{
-            console.log("succesfully deleted from guestbook")
-        }
+        callback(error)
     })
 }
 
 
-exports.updateBlog = function(id, title, content) {
+exports.updateBlog = function(id, title, content, callback) {
     const query = 'UPDATE blog SET title = ?, content = ? WHERE id = ?'
     db.run(query, [title, content, id], function(error){
-        if(error){
-            console.log("couldnt update blogpost")
-        }else{
-            console.log("succesfully updated blog")
-        }
+            callback(error)
     }) 
+}
+
+exports.getBlogFromBlog = function(id, callback) {
+    const query = 'SELECT * FROM blog WHERE id = ?'
+    db.get(query, [id], function(error, blog) {
+        if(error){
+            console.log("couldnt fetch specific blogpost")
+            callback(error)
+        }else{
+            console.log("succesfully fetched specific blogpost")
+            callback(blog)            
+        }
+    })
 }

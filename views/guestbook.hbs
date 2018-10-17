@@ -51,9 +51,9 @@
             <div class="column notification is-warning">
                 <p class="is-size-5">Write something in the guestbook!</p>
                 <p>Your name</p>
-            <textarea class="input" name="author" id="author" cols="53" ></textarea>
+            <textarea class="input" name="author" id="author" cols="53" required ></textarea>
             <p>Your message</p>
-                <textarea class="textarea" name="message" id="message" cols="53" ></textarea>
+                <textarea class="textarea" name="message" id="message" cols="53" required ></textarea>
                 <div class="control">
                 <button class="button is-info">Submit</button>
                 </div>
@@ -64,7 +64,7 @@
                  {{#if gbook}}
                 {{#each gbook}}
                 <div class="column notification is-info" > 
-                <p class="is-size-3" name="author"> {{author}} </p>
+                <p class="is-size-3" name="author"> {{author}}</p>
                 <p class="is-size-5" name="msg"> {{message}}</p>
                 {{#if ../loggedin}} <form action="/delg/{{id}}" method="POST"> <button class="button is-danger">Delete</button> </form>
                 {{/if}}

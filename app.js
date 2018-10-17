@@ -107,16 +107,18 @@ app.get('/blogpost', function(request, response){
     const isLoggedIn = request.session.loggedin
 
     db.getAllBlogPosts(function(error, blog) {
-
+        if(error){
+            request.status(500).send(error)
+        }else{
             const model = {
                 loggedin : isLoggedIn,
                 blogpost : blog
             }
             response.render("blogpost.hbs", model)
-        })
+        }
+    })
 })
 
-// app.get('/editBlogpost', function(request, response) {
 
 
 app.get('/newblogpost', function(request, response){
@@ -163,12 +165,17 @@ app.get('/guestbook', csrfProtection, function(request, response){
     const isLoggedIn = request.session.loggedin
 
     db.getAllGuestbookEntries(function(error, guestbook) {
+            if(error){
+                response.status(500).send("couldnt get blogposts")
+            }else{
+
             const model = {
                 loggedin : isLoggedIn ,
                 gbook : guestbook,
                 csrfToken : request.csrfToken()
             }
             response.render("guestbook.hbs", model)
+        }
         })
     }) 
 
@@ -178,17 +185,26 @@ app.post('/updateblog/:id', function(request, response) {
     const Id = request.params.id
     const Title = request.body.titleblogpost
     const Content = request.body.contentblogpost
-    db.updateBlog(Id, Title, Content, function() {})
-    
+    db.updateBlog(Id, Title, Content, function(error) {
+        if(error){
+            response.status(500).send("couldnt update blog")
+        }else{  
     response.redirect('/blogpost')
+        }
+    })
 })
 
 app.post('/delbp/:id', function(request, response) {
     
         const id = request.params.id
         
-        db.deleteBlogpost(id, function() {})
+        db.deleteBlogpost(id, function(error) {
+            if(error){
+                response.status(500).send(error)
+            }else{
         response.redirect('/blogpost')
+        }
+    })
 })
 
 app.get('/editbp/:id', function(request, response) {
@@ -196,27 +212,40 @@ app.get('/editbp/:id', function(request, response) {
     const Id = request.params.id
     const IsloggedIn = request.session.loggedin
 
-    db.getBlogFromBlog(Id, function(error, blog) {
+    db.getBlogFromBlog(Id, function(blog, error) {
+        if(error){
+            response.status(500).send("couldnt fetch blogposts")
+        }else{
         const model = {
             blogpost : blog ,
             loggedin : IsloggedIn
         }
         response.render("editBlogpost.hbs", model)
+    }
     })  
 })
 
 app.post('/delgallery/:id', function(request, response) {
 
     const id = request.params.id
-    db.deleteGalleryEntry(id, function(){})
+    db.deleteGalleryEntry(id, function(error){
+        if(error){
+            response.status(500).send("couldnt delete gallery entry")
+        }
+    })
     response.redirect('/gallery')
 })
 
 app.post('/delg/:id', function(request, response){
 
     const id = request.params.id
-    db.deleteGuestbookEntry(id, function(){})
+    db.deleteGuestbookEntry(id, function(error){
+        if(error){
+            response.status(500).send("couldnt delete guestbook entry")
+        }else{   
     response.redirect('/guestbook')
+        }
+    })
 })
 
 app.get('/newGalleryEntry', function(request, response){
@@ -238,8 +267,10 @@ app.post('/submitBlogpost', function(request,response){
     const Title = request.body.title
     const Content = request.body.blogpost
 
-    db.newBlogpost(Author, Title, Content, function() {
-            
+    db.newBlogpost(Author, Title, Content, function(error) {
+            if(error){
+                response.status(500).send(error)
+            }
         })    
     response.redirect('/blogpost')
     
@@ -270,14 +301,18 @@ app.post('/guestbookEntry', csrfProtection , function(request, response){
     const Author = request.body.author
     const Message = request.body.message
 
-    db.newGuestbookEntry(Author, Message, function() {})
+    db.newGuestbookEntry(Author, Message, function(error) {
+        if(error){
+            response.status(500).send(error)
+        }else{
             response.redirect('/guestbook')
+        }
     })
+})
 
 app.post('/login', csrfProtection , function(request, response){
     const email = request.body.em
     const password = request.body.pw
-    const wrong = false
 
     if (email == 'Attamannen' && bcrypt.compareSync(password, '$2a$10$knENzIxH4cioBhLyHKiLjuycbNkkHNZxyHCuulnlMRt5Xif6lB83m')) {
         request.session.loggedin = true
