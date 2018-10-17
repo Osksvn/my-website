@@ -220,7 +220,7 @@ app.get('/editbp/:id', function(request, response) {
             blogpost : blog ,
             loggedin : IsloggedIn
         }
-        response.render("editBlogpost.hbs", model)
+        response.redirect("editBlogpost.hbs", model)
     }
     })  
 })
